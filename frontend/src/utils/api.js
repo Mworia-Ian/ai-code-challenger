@@ -6,6 +6,7 @@ export const useApi = () => {
 
   const makeRequest = useCallback(async (endpoint, options = {}) => {
     const token = await getToken();
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
     const defaultOptions = {
       headers: {
         "Content-Type": "application/json",
@@ -13,7 +14,7 @@ export const useApi = () => {
       },
     };
 
-    const response = await fetch(`/api/${endpoint}`, {
+    const response = await fetch(`${API_URL}/${endpoint}`, {
       ...defaultOptions,
       ...options,
     });

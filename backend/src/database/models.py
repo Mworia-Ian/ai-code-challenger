@@ -1,10 +1,20 @@
+import os
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 
-engine = create_engine("sqlite:///ai_code_challenger.db", echo=True)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# For local development, fall back to SQLite
+if DATABASE_URL is None:
+    DATABASE_URL = "sqlite:///ai_code_challenger.db"
+# Render provides postgresql:// URLs, but SQLAlchemy now prefers postgresql+psycopg2://
+elif DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DATABASE_URL, echo=True)
 Base = declarative_base()
 
 class Challenge(Base):
