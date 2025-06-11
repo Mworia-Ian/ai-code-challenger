@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "backend/src/app.py": {
+      "runtime": "@vercel/python"
+    }
+  },
   "builds": [
     {
       "src": "frontend/package.json",
@@ -7,10 +12,6 @@
       "config": {
         "distDir": "dist"
       }
-    },
-    {
-      "src": "backend/src/app.py",
-      "use": "@vercel/python"
     }
   ],
   "rewrites": [
