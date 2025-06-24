@@ -38,14 +38,16 @@ async def generate_challenge_endpoint(request: ChallengeRequest, request_obj: Re
         
         challenge_data = generate_challenge(request.difficulty)
         
-        # Convert options list to JSON string
-        challenge_data['options'] = json.dumps(challenge_data['options'])
-        
+        # Create the challenge in the database with only the expected fields
         new_challenge = create_challenge(
-            db=db, 
+            db=db,
             difficulty=request.difficulty, 
             created_by=user_id,
-            **challenge_data)
+            title=challenge_data['title'],
+            options=json.dumps(challenge_data['options']),
+            correct_answer_id=challenge_data['correct_answer_id'],
+            explanation=challenge_data['explanation']
+        )
 
         quota.quota_remaining -= 1
         db.commit()
